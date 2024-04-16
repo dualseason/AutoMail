@@ -14,7 +14,7 @@ namespace AutoMail.Services.impl
 
         public void ScheduleBackgroundExecute()
         {
-            var mailService = (IMailService)_serviceProvider.GetRequiredService(typeof(MailService));
+            var mailService = (IMailService)_serviceProvider.GetRequiredService(typeof(IMailService));
             mailService.SendMail();
         }
     }
