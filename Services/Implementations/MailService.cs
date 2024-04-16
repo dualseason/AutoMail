@@ -1,4 +1,5 @@
 ﻿using AutoMail.Services.Interfaces;
+using AutoMail.Utility;
 
 namespace AutoMail.Services.Implementations
 {
@@ -6,7 +7,11 @@ namespace AutoMail.Services.Implementations
     {
         public void SendMail()
         {
-            Console.WriteLine("发送邮箱方法调用成功");
+            // 创建 EmailSender 实例，提供发送邮件所需的参数
+            EmailSender emailSender = new EmailSender("dualseason@qq.com", "pkfkqwhmigjibdah", "smtp.qq.com", 587);
+
+            // 发送邮件
+            emailSender.SendEmail("2645366211@qq.com", "邮件主题", "邮件内容");
         }
     }
 }

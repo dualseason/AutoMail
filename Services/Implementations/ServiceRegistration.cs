@@ -11,6 +11,7 @@ namespace AutoMail.Services.Implementations
         { 
             services.AddTransient<MailBackgroundTask>();
             services.AddTransient<MailService>();
+            services.AddTransient<IMailService, MailService>(); // 使用 AddTransient 添加服务
             // 注册更多的服务...
         }
     }
