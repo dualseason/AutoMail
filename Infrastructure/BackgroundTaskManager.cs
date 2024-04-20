@@ -2,7 +2,7 @@
 using AutoMail.Services.Interfaces;
 using Hangfire;
 
-namespace AutoMail.Services.Implementations
+namespace AutoMail.Infrastructure
 {
     public class BackgroundTaskManager
     {

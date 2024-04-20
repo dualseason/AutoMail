@@ -1,4 +1,4 @@
-namespace AutoMail
+namespace AutoMail.Models.Entities
 {
     public class WeatherForecast
     {

@@ -1,7 +1,6 @@
-﻿using AutoMail.Services.impl;
+﻿using AutoMail.Repository;
+using AutoMail.Services.impl;
 using AutoMail.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace AutoMail.Services.Implementations
 {
@@ -13,6 +12,10 @@ namespace AutoMail.Services.Implementations
             services.AddTransient<MailBackgroundTask>();
             services.AddTransient<IMailService, MailService>();
             // 注册更多的服务...
+
+            // 注册 IUserRepository 接口的实现类
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEmailConfigurationRepository, EmailConfigurationRepository>();
         }
     }
 }

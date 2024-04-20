@@ -1,3 +1,4 @@
+using AutoMail.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoMail.Controllers
