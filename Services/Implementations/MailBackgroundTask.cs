@@ -1,5 +1,4 @@
-﻿using AutoMail.Services.Implementations;
-using AutoMail.Services.Interfaces;
+﻿using AutoMail.Services.Interfaces;
 
 namespace AutoMail.Services.impl
 {
@@ -14,8 +13,8 @@ namespace AutoMail.Services.impl
 
         public void ScheduleBackgroundExecute()
         {
-            var mailService = (IMailService)_serviceProvider.GetRequiredService(typeof(IMailService));
-            mailService.SendMail();
+            var mailService = (IMailManagementService)_serviceProvider.GetRequiredService(typeof(IMailManagementService));
+            mailService.SendMailAsync();
         }
     }
 }

@@ -9,9 +9,9 @@ namespace AutoMail.Controllers
     {
         private readonly ILogger<WeatherForecastController> _logger;
 
-        private readonly IMailService _mailService;
+        private readonly IMailManagementService _mailService;
 
-        public MailController(ILogger<WeatherForecastController> logger, IMailService mailService)
+        public MailController(ILogger<WeatherForecastController> logger, IMailManagementService mailService)
         {
             _logger = logger;
             _mailService = mailService;
@@ -20,7 +20,7 @@ namespace AutoMail.Controllers
         [HttpGet(Name = "SendMail")]
         public string SendMail() 
         {
-            _mailService.SendMail();
+            _mailService.SendMailAsync();
             return "发送成功";
         }
     }

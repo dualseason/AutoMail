@@ -1,6 +1,7 @@
 ﻿using AutoMail.Models.Entitys;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AutoMail.Models.Entities
 {
@@ -15,6 +16,7 @@ namespace AutoMail.Models.Entities
         public string? UserPhone { get; set; }
         [Required]
         public required string UserPassword { get; set; }
+        [JsonIgnore]
         public ICollection<EmailConfiguration>? EmailConfigurations { get; set; }
     }
 }

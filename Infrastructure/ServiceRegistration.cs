@@ -10,7 +10,7 @@ namespace AutoMail.Services.Implementations
         {
             // 使用 AddTransient 添加服务
             services.AddTransient<MailBackgroundTask>();
-            services.AddTransient<IMailService, MailService>();
+            services.AddTransient<IMailManagementService, MailManagementService>();
             // 注册更多的服务...
 
             // 注册 IUserRepository 接口的实现类

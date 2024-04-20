@@ -11,12 +11,15 @@ namespace AutoMail.Models.Entitys
         [Required]
         public required string SmtpServer { get; set; }
 
+        [Required]
         // SMTP 服务器的端口号，通常是 25、465 或 587。
         public int SmtpPort { get; set; }
 
+        [Required]
         // 用于身份验证的用户名，可能是你的邮箱地址。
         public required string UserName { get; set; }
 
+        [Required]
         // 用于身份验证的密码。
         public required string Password { get; set; }
 

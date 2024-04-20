@@ -19,7 +19,7 @@ namespace AutoMail.Repository
 
         public List<EmailConfiguration> GetAllEmailConfigurations()
         {
-            return [.. _dbContext.EmailConfigurations];
+            return [.. _dbContext.EmailConfigurations.Include(x => x.User)];
         }
 
         public void AddEmailConfiguration(EmailConfiguration emailConfiguration)
