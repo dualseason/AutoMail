@@ -33,6 +33,6 @@ namespace AutoMail.Models.Entitys
         public int UserId { get; set; }
 
         // 导航属性，表示与 User 表的关联
-        public User? User { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

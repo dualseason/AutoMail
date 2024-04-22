@@ -14,9 +14,9 @@ namespace AutoMail.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IPasswordHasher<User> passwordHasher)
+        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _userRepository = userRepository;
             _userManager = userManager;
@@ -46,17 +46,17 @@ namespace AutoMail.Controllers
 
         // POST: /user
         [HttpPost]
-        public IActionResult CreateUser(User newUser)
+        public IActionResult CreateUser(ApplicationUser newUser)
         {
             _userRepository.AddUser(newUser);
-            return CreatedAtAction(nameof(GetUserById), new { id = newUser.ID }, newUser);
+            return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
         }
 
         // PUT: /user/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, User updatedUser)
+        public IActionResult UpdateUser(int id, ApplicationUser updatedUser)
         {
-            if (id != updatedUser.ID)
+            if (!id.ToString().Equals(updatedUser.Id))
             {
                 return BadRequest();
             }

@@ -13,8 +13,8 @@ namespace AutoMail.Services.impl
 
         public void ScheduleBackgroundExecute()
         {
-            var mailService = (IMailManagementService)_serviceProvider.GetRequiredService(typeof(IMailManagementService));
-            mailService.SendMailAsync();
+            //var _mailService = (IMailManagementService)_serviceProvider.GetRequiredService(typeof(IMailManagementService));
+            //_mailService.SendMailAsync();
         }
     }
 }

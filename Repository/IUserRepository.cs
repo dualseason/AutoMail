@@ -4,10 +4,10 @@ namespace AutoMail.Repository
 {
     public interface IUserRepository
     {
-        IEnumerable<User?> GetAllUsers();
-        User? GetUserById(int id);
-        void AddUser(User user);
-        void UpdateUser(User user);
+        IEnumerable<ApplicationUser?> GetAllUsers();
+        ApplicationUser? GetUserById(int id);
+        void AddUser(ApplicationUser user);
+        void UpdateUser(ApplicationUser user);
         void DeleteUser(int id);
     }
 }

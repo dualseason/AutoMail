@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoMail.Repository
 {
-    public class DataContext : DbContext
+    public class ApplicationContext : DbContext
     {
-        public DataContext(DbContextOptions options) : base(options) { }
+        public ApplicationContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<ApplicationUser> Users { get; set; } = null!;
         public DbSet<EmailConfiguration> EmailConfigurations { get; set; } = null!;
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMail.Services.Interfaces;
+﻿using AutoMail.Models.ViewModels;
+using AutoMail.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoMail.Controllers
@@ -17,11 +18,20 @@ namespace AutoMail.Controllers
             _mailService = mailService;
         }
 
-        [HttpGet(Name = "SendMail")]
-        public string SendMail() 
+        [HttpPost("send")]
+        public async Task<IActionResult> SendMail([FromBody] SendMailRequest request)
         {
-            _mailService.SendMailAsync();
-            return "发送成功";
+            // 根据请求参数调用 SendMailAsync 方法
+            try
+            {
+                await _mailService.SendMailAsync(request.EmailConfigID, request.ReceiveEmail, request.Subject, request.Body);
+                return Ok("邮件发送成功");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"发送邮件时发生错误：{ex.Message}");
+                return StatusCode(500, "发送邮件时发生错误");
+            }
         }
     }
 }

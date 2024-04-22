@@ -10,7 +10,7 @@ namespace AutoMail.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<User> LoginUserAsync(string email, string password)
+        public Task<ApplicationUser> LoginUserAsync(string email, string password)
         {
             throw new NotImplementedException();
         }
@@ -20,7 +20,7 @@ namespace AutoMail.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<User> RegisterUserAsync(string userName, string email, string password)
+        public Task<ApplicationUser> RegisterUserAsync(string userName, string email, string password)
         {
             throw new NotImplementedException();
         }

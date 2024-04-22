@@ -2,27 +2,27 @@
 
 namespace AutoMail.Repository
 {
-    public class UserRepository(DataContext dbContext) : IUserRepository
+    public class UserRepository(ApplicationContext dbContext) : IUserRepository
     {
-        private readonly DataContext _dbContext = dbContext;
+        private readonly ApplicationContext _dbContext = dbContext;
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<ApplicationUser> GetAllUsers()
         {
             return _dbContext.Users.ToList();
         }
 
-        public User? GetUserById(int id)
+        public ApplicationUser? GetUserById(int id)
         {
             return _dbContext.Users.Find(id);
         }
 
-        public void AddUser(User user)
+        public void AddUser(ApplicationUser user)
         {
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(ApplicationUser user)
         {
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();

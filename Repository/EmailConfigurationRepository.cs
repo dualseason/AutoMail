@@ -5,9 +5,9 @@ namespace AutoMail.Repository
 {
     public class EmailConfigurationRepository : IEmailConfigurationRepository
     {
-        private readonly DataContext _dbContext;
+        private readonly ApplicationContext _dbContext;
 
-        public EmailConfigurationRepository(DataContext dbContext)
+        public EmailConfigurationRepository(ApplicationContext dbContext)
         {
             _dbContext = dbContext;
         }
