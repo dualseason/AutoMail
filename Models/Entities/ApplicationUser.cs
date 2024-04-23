@@ -8,14 +8,14 @@ namespace AutoMail.Models.Entities
     {
         // 可以添加自定义属性
         public int UserAge { get; set; }
-        public string UserGender { get; set; }
+        public string? UserGender { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
 
         // 构造函数
-        protected ApplicationUser() : base()
+        public ApplicationUser() : base()
         {
             CreatedAt = DateTime.UtcNow;
             IsDeleted = false;

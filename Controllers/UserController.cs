@@ -1,4 +1,5 @@
-﻿using AutoMail.Models.Entities;
+﻿using AutoMail.Attributes;
+using AutoMail.Models.Entities;
 using AutoMail.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace AutoMail.Controllers
 
         // GET: /user
         [HttpGet]
+        [RequireAuthenticationAttribute]
         public IActionResult GetAllUsers()
         {
             var users = _userRepository.GetAllUsers();
