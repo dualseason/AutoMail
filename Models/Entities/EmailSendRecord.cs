@@ -1,8 +1,10 @@
 ﻿using AutoMail.Models.Entitys;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoMail.Models.Entities
 {
+    [Table("EmailSendRecord")]
     public class EmailSendRecord: BaseEntity
     {
         [Required]

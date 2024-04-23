@@ -10,5 +10,13 @@ namespace AutoMail.Repository
 
         public DbSet<ApplicationUser> Users { get; set; } = null!;
         public DbSet<EmailConfiguration> EmailConfigurations { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // 指定所有实体的模式
+            modelBuilder.HasDefaultSchema("AutoMail");
+        }
     }
 }

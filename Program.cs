@@ -14,7 +14,8 @@ ServiceRegistration.RegisterServices(builder.Services);
 
 // 这里使用了内存数据库，你可以根据需要更改连接字符串
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseInMemoryDatabase("items"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HangfireConnection"))
+); 
 
 // 配置 Identity 服务
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

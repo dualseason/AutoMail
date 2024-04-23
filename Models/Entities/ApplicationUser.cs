@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoMail.Models.Entities
 {
-    [Table("application_user")]
+    [Table("ApplicationUser")]
     public class ApplicationUser : IdentityUser
     {
         // 可以添加自定义属性

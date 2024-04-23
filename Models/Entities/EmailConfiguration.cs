@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoMail.Models.Entitys
 {
-    [Table("email_configuration")]
+    [Table("EmailConfiguration")]
     public class EmailConfiguration : BaseEntity
     {
         // SMTP 服务器的地址或主机名，用于发送邮件。

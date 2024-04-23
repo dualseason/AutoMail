@@ -25,7 +25,7 @@ namespace AutoMail.Controllers
 
         // GET: /user
         [HttpGet]
-        [RequireAuthenticationAttribute]
+        [RequireAuthentication]
         public IActionResult GetAllUsers()
         {
             var users = _userRepository.GetAllUsers();
