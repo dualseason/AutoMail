@@ -3,9 +3,8 @@ using Hangfire;
 using AutoMail.Repository;
 using AutoMail.Infrastructure;
 using AutoMail.Services.Implementations;
-using Microsoft.AspNetCore.Identity;
 using AutoMail.Middleware;
-using AutoMail.Models.Entities;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,15 @@ ServiceRegistration.RegisterServices(builder.Services);
 // 这里使用了内存数据库，你可以根据需要更改连接字符串
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HangfireConnection"))
-); 
+);
+
+// 配置IdentityServer
+builder.Services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryClients(IdentityConfiguration.Clients)
+                .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
+                .AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
+                .AddTestUsers(IdentityConfiguration.Users);
 
 // 添加 Hangfire 服务。
 builder.Services.AddHangfire(configuration => configuration
@@ -48,6 +55,9 @@ app.UseHangfireDashboard();
 // 获取后台任务管理器实例并调度后台任务
 var backgroundTaskManager = new BackgroundTaskManager(app.Services);
 backgroundTaskManager.ScheduleBackgroundTasks();
+
+// 开启IdentityServer
+app.UseIdentityServer();
 
 app.UseHttpsRedirection();
 
