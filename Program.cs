@@ -17,21 +17,6 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HangfireConnection"))
 ); 
 
-// 配置 Identity 服务
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    // 配置密码选项
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 8;
-
-    // 其他配置...
-})
-.AddEntityFrameworkStores<ApplicationContext>()
-.AddDefaultTokenProviders();
-
 // 添加 Hangfire 服务。
 builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -40,6 +25,8 @@ builder.Services.AddHangfire(configuration => configuration
     .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
 
 builder.Services.AddHangfireServer();
+
+// 开启Controller层
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -67,9 +54,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-// 开启Identity
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();

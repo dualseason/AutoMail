@@ -2,7 +2,7 @@
 
 namespace AutoMail.Repository
 {
-    public interface IUserRepository
+    public interface IApplicationUserRepository
     {
         IEnumerable<ApplicationUser?> GetAllUsers();
         ApplicationUser? GetUserById(int id);

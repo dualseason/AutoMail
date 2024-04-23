@@ -10,17 +10,11 @@ namespace AutoMail.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IApplicationUserRepository _userRepository;
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPasswordHasher<ApplicationUser> passwordHasher)
+        public UserController(IApplicationUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _passwordHasher = passwordHasher;
         }
 
         // GET: /user
@@ -49,14 +43,14 @@ namespace AutoMail.Controllers
         public IActionResult CreateUser(ApplicationUser newUser)
         {
             _userRepository.AddUser(newUser);
-            return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+            return CreatedAtAction(nameof(GetUserById), new { id = newUser.ID }, newUser);
         }
 
         // PUT: /user/{id}
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, ApplicationUser updatedUser)
         {
-            if (!id.ToString().Equals(updatedUser.Id))
+            if (!id.ToString().Equals(updatedUser.ID))
             {
                 return BadRequest();
             }

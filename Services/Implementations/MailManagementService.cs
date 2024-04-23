@@ -14,7 +14,6 @@ namespace AutoMail.Services.Implementations
             _emailConfigurationRepository = emailConfigurationRepository;
         }
 
-
         public Task<EmailConfiguration> AddEmailConfigurationAsync(EmailConfiguration emailConfiguration)
         {
             throw new NotImplementedException();

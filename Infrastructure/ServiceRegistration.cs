@@ -14,7 +14,7 @@ namespace AutoMail.Services.Implementations
             // 注册更多的服务...
 
             // 注册 IUserRepository 接口的实现类
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IEmailConfigurationRepository, EmailConfigurationRepository>();
         }
     }

@@ -1,24 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMail.Models.Entitys;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoMail.Models.Entities
 {
     [Table("ApplicationUser")]
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : BaseEntity
     {
-        // 可以添加自定义属性
-        public int UserAge { get; set; }
-        public string? UserGender { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public bool IsDeleted { get; set; }
-
-        // 构造函数
-        public ApplicationUser() : base()
-        {
-            CreatedAt = DateTime.UtcNow;
-            IsDeleted = false;
-        }
+        public required string UserName { get; set; }
+        public required string Password { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public bool EmailConfirmed { get; set; } = false;
     }
 }

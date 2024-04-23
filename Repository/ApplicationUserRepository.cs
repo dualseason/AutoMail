@@ -2,7 +2,7 @@
 
 namespace AutoMail.Repository
 {
-    public class UserRepository(ApplicationContext dbContext) : IUserRepository
+    public class ApplicationUserRepository(ApplicationContext dbContext) : IApplicationUserRepository
     {
         private readonly ApplicationContext _dbContext = dbContext;
 

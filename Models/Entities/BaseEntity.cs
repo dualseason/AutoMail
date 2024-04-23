@@ -7,14 +7,6 @@
         public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
 
-        // Optionally, add more common fields as needed
-        // public string CreatedBy { get; set; }
-        // public string UpdatedBy { get; set; }
-        // public string IPAddress { get; set; }
-        // public string UserAgent { get; set; }
-        // public string ConcurrencyToken { get; set; }
-
-        // Constructor to initialize common fields
         protected BaseEntity()
         {
             CreatedAt = DateTime.UtcNow;
