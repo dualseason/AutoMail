@@ -13,7 +13,9 @@ namespace AutoMail.Models.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        protected ApplicationUser()
+
+        // 构造函数
+        protected ApplicationUser() : base()
         {
             CreatedAt = DateTime.UtcNow;
             IsDeleted = false;

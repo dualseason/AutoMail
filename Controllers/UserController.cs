@@ -1,9 +1,7 @@
 ﻿using AutoMail.Models.Entities;
-using AutoMail.Models.ViewModels;
 using AutoMail.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutoMail.Controllers
 {
@@ -12,11 +10,11 @@ namespace AutoMail.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IPasswordHasher<ApplicationUser> passwordHasher)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _userRepository = userRepository;
             _userManager = userManager;

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AutoMail.Models.Entitys
+﻿namespace AutoMail.Models.Entitys
 {
     public abstract class BaseEntity
     {

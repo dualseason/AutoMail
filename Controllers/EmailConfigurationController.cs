@@ -1,8 +1,6 @@
 ﻿using AutoMail.Models.Entitys;
 using AutoMail.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 namespace AutoMail.Controllers
 {

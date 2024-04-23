@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace AutoMail.Middleware
@@ -13,7 +12,7 @@ namespace AutoMail.Middleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, UserManager<IdentityUser> userManager)
+        public async Task Invoke(HttpContext context)
         {
             if (context == null)
             {
