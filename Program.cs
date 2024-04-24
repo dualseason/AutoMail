@@ -4,6 +4,8 @@ using AutoMail.Repository;
 using AutoMail.Infrastructure;
 using AutoMail.Services.Implementations;
 using AutoMail.Middleware;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +20,40 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 // 配置IdentityServer
 builder.Services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryClients(IdentityConfiguration.Clients)
-                .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
-                .AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
-                .AddTestUsers(IdentityConfiguration.Users);
+     //添加证书加密方式，执行该方法，会先判断tempkey.rsa证书文件是否存在，如果不存在的话，就创建一个新的tempkey.rsa证书文件，如果存在的话，就使用此证书文件。
+     .AddDeveloperSigningCredential()
+     .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
+     //把受保护的Api资源添加到内存中
+     .AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
+     //客户端配置添加到内存中
+     .AddInMemoryClients(IdentityConfiguration.Clients)
+     //测试的用户添加进来
+     .AddTestUsers(IdentityConfiguration.Users);
+
+//builder.Services.AddAuthentication("Bearer")
+//    .AddJwtBearer("Bearer", option =>
+//    {
+//        //oidc的服务地址(一定要用 Https)
+//        //也就是IdentifyServer项目运行地址
+//        option.Authority = "https://localhost:7133";
+//        option.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateAudience = false
+//        };
+//    });
+
+////注册授权服务
+//builder.Services.AddAuthorization(option =>
+//{
+//    //添加授权策略
+//    option.AddPolicy("MyApiScope", opt =>
+//    {
+//        //配置鉴定用户的规则，也就是说必须通过身份认证
+//        opt.RequireAuthenticatedUser();
+//        //鉴定api范围的规则
+//        opt.RequireClaim("scope", "simple_api");
+//    });
+//});
 
 // 添加 Hangfire 服务。
 builder.Services.AddHangfire(configuration => configuration
@@ -59,9 +90,9 @@ backgroundTaskManager.ScheduleBackgroundTasks();
 // 开启IdentityServer
 app.UseIdentityServer();
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
