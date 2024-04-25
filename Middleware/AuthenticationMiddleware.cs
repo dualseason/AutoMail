@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Controllers;
-
-namespace AutoMail.Middleware
+﻿namespace AutoMail.Middleware
 {
     public class AuthenticationMiddleware
     {
