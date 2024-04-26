@@ -1,25 +1,27 @@
-﻿using AutoMail.Attributes;
-using AutoMail.Models.Entities;
+﻿using AutoMail.Models.Entities;
+using AutoMail.Services.Interfaces;
 using AutoMail.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using AutoMail.Middleware;
 
 namespace AutoMail.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IApplicationUserRepository _userRepository;
+        private readonly IAuthenticationService _authorizationService;
 
-        public UserController(IApplicationUserRepository userRepository)
+        public AuthenticationController(IApplicationUserRepository userRepository, IAuthenticationService authenticationService)
         {
             _userRepository = userRepository;
+            _authorizationService = authenticationService;
         }
 
         // GET: /user
-        [HttpGet]
         [RequireAuthentication]
+        [HttpGet("user")]
         public IActionResult GetAllUsers()
         {
             var users = _userRepository.GetAllUsers();
@@ -27,7 +29,7 @@ namespace AutoMail.Controllers
         }
 
         // GET: /user/{id}
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
         public IActionResult GetUserById(int id)
         {
             var user = _userRepository.GetUserById(id);
@@ -39,7 +41,7 @@ namespace AutoMail.Controllers
         }
 
         // POST: /user
-        [HttpPost]
+        [HttpPost("user")]
         public IActionResult CreateUser(ApplicationUser newUser)
         {
             _userRepository.AddUser(newUser);
@@ -47,7 +49,7 @@ namespace AutoMail.Controllers
         }
 
         // PUT: /user/{id}
-        [HttpPut("{id}")]
+        [HttpPut("user/{id}")]
         public IActionResult UpdateUser(int id, ApplicationUser updatedUser)
         {
             if (!id.ToString().Equals(updatedUser.ID))
@@ -59,7 +61,7 @@ namespace AutoMail.Controllers
         }
 
         // DELETE: /user/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("user/{id}")]
         public IActionResult DeleteUser(int id)
         {
             var user = _userRepository.GetUserById(id);
@@ -69,6 +71,12 @@ namespace AutoMail.Controllers
             }
             _userRepository.DeleteUser(id);
             return NoContent();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            return Ok(await _authorizationService.LoginUserAsync(email, password));
         }
     }
 }

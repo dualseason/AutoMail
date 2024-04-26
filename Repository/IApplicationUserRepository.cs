@@ -6,6 +6,7 @@ namespace AutoMail.Repository
     {
         IEnumerable<ApplicationUser?> GetAllUsers();
         ApplicationUser? GetUserById(int id);
+        ApplicationUser? GetUserByName(string name);
         void AddUser(ApplicationUser user);
         void UpdateUser(ApplicationUser user);
         void DeleteUser(int id);

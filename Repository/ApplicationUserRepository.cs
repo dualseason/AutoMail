@@ -37,5 +37,10 @@ namespace AutoMail.Repository
                 _dbContext.SaveChanges();
             }
         }
+
+        public ApplicationUser GetUserByName(string name)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.Email == name);
+        }
     }
 }
