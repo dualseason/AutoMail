@@ -1,4 +1,6 @@
-﻿namespace AutoMail.Models.Entities
+﻿using SqlSugar;
+
+namespace AutoMail.Models.Entities
 {
     public class EmailConfiguration : BaseEntity
     {
@@ -24,6 +26,7 @@
         public int UserId { get; set; }
 
         // 导航属性，表示与 User 表的关联
+        [Navigate(NavigateType.ManyToOne, nameof(UserId), nameof(ID))]
         public ApplicationUser? User { get; set; }
     }
 }

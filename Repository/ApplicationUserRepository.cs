@@ -9,7 +9,7 @@ namespace AutoMail.Repository
 
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            return _dbContext.Queryable<ApplicationUser>().ToList();
+            return _dbContext.Queryable<ApplicationUser>().Includes(x => x.EmailConfigurations).ToList();
         }
 
         public ApplicationUser? GetUserById(int id)

@@ -2,23 +2,16 @@ using Hangfire;
 using AutoMail.Infrastructure;
 using AutoMail.Services.Implementations;
 using AutoMail.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
 using SqlSugar;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 调用服务注册类来注册服务
 ServiceRegistration.RegisterServices(builder.Services);
 
-// 这里使用了内存数据库，你可以根据需要更改连接字符串
-//builder.Services.AddDbContext<ApplicationContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"))
-//);
-
-//注册上下文：AOP里面可以获取IOC对象，如果有现成框架比如Furion可以不写这一行
+//注册上下文：AOP里面可以获取IOC对象
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<ISqlSugarClient>(option =>
@@ -28,40 +21,37 @@ builder.Services.AddSingleton<ISqlSugarClient>(option =>
         DbType = DbType.SqlServer,
         ConnectionString = builder.Configuration.GetConnectionString("SQLConnection"),
         IsAutoCloseConnection = true,
+        ConfigureExternalServices = new ConfigureExternalServices
+        {
+            EntityService = (c, p) =>
+            {
+                //支持string?和string  
+                if (p.IsPrimarykey == false && new NullabilityInfoContext().Create(c).WriteState is NullabilityState.Nullable)
+                {
+                    p.IsNullable = true;
+                }
+            }
+        }
     },
     db =>
     {
-        db.DbMaintenance.CreateDatabase();
+        if (!Const.InitDataBase)
+        {
+            db.DbMaintenance.CreateDatabase();
 
-        db.CodeFirst.SetStringDefaultLength(200).InitTables(typeof(Program).Assembly.GetTypes()
-        .Where(type => type.FullName.Contains("AutoMail.Models.Entities"))
-        .Where(type => !type.FullName.Contains("AutoMail.Models.Entities.BaseEntity"))
-        .ToArray());
-
+            db.CodeFirst.SetStringDefaultLength(200).InitTables(typeof(Program).Assembly.GetTypes()
+            .Where(type => type.FullName.Contains("AutoMail.Models.Entities"))
+            .Where(type => !type.FullName.Contains("AutoMail.Models.Entities.BaseEntity"))
+            .ToArray());
+            Const.InitDataBase = true;
+        }
+       
         db.Aop.OnLogExecuting = (sql, pars) =>
         {
-
+            Console.WriteLine(UtilMethods.GetNativeSql(sql, pars));
         };
     });
     return sqlSugar;
-});
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = "yourIssuer",
-        ValidAudience = "yourAudience",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yourSecretKey"))
-    };
 });
 
 // 添加 Hangfire 服务。
@@ -78,7 +68,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoMail API", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",

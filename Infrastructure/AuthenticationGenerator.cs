@@ -39,10 +39,11 @@ namespace AutoMail.Infrastructure
         public string GenerateUserToken(string username)
         {
             // 设置JWT参数
-            string? secretKey = _configuration["Jwt:SecretKey"]; // 替换为你的密钥
-            string? issuer = _configuration["Jwt:Issuer"]; // 替换为你的发行者
-            string? audience = _configuration["Jwt:Audience"]; // 替换为你的受众
-            DateTime expiration = DateTime.UtcNow.AddHours(1); // 令牌过期时间，例如：1小时后
+            string? secretKey = _configuration["Jwt:SecretKey"]; 
+            string? issuer = _configuration["Jwt:Issuer"];
+            string? audience = _configuration["Jwt:Audience"];
+            // 令牌过期时间，例如：1小时后
+            DateTime expiration = DateTime.UtcNow.AddHours(1); 
 
             if (!string.IsNullOrEmpty(secretKey) && !string.IsNullOrEmpty(issuer) && !string.IsNullOrEmpty(audience))
             {
