@@ -1,35 +1,30 @@
 ﻿using AutoMail.Infrastructure;
 using AutoMail.Models.Entities;
 using AutoMail.Models.ViewModels;
-using AutoMail.Repository;
 using AutoMail.Services.Interfaces;
+using SqlSugar;
 
 namespace AutoMail.Services.Implementations
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService(IConfiguration configuration, ISqlSugarClient dbContext, ILogger<AuthenticationService> logger) : IAuthenticationService
     {
-        private readonly IApplicationUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
-
-        public AuthenticationService(IApplicationUserRepository userRepository, IConfiguration configuration)
-        {
-            _userRepository = userRepository;
-            _configuration = configuration;
-        }
+        private readonly ISqlSugarClient _dbContext = dbContext;
+        private readonly IConfiguration _configuration = configuration;
+        private readonly ILogger<AuthenticationService> _logger = logger;
 
         public Task ChangePasswordAsync(string userId, string newPassword)
         {
             throw new NotImplementedException();
         }
 
-        public Task<LoginUserResult> LoginUserAsync(string email, string password)
+        public Task<LoginUserResult> LoginUserAsync(string user, string password)
         {
             // 在这里进行用户身份验证逻辑
-            if (IsValidUser(email, password))
+            if (IsValidUser(user, password))
             {
                 // 如果用户身份验证成功，生成 JWT 令牌
-                var token = new AuthenticationGenerator(_configuration).GenerateUserToken(email);
-                ApplicationUser? applicationUser = _userRepository.GetUserByName(email);
+                var token = new AuthenticationGenerator(_configuration).GenerateUserToken(user);
+                ApplicationUser? applicationUser = _dbContext.Queryable<ApplicationUser>().Where(x => x.UserName == user).First();
                 var result = new LoginUserResult
                 {
                     Success = true,
