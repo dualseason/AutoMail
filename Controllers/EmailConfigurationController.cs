@@ -1,4 +1,4 @@
-﻿using AutoMail.Models.Entitys;
+﻿using AutoMail.Models.Entities;
 using AutoMail.Repository;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Hangfire;
-using AutoMail.Repository;
 using AutoMail.Infrastructure;
 using AutoMail.Services.Implementations;
 using AutoMail.Middleware;
@@ -8,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +14,37 @@ var builder = WebApplication.CreateBuilder(args);
 ServiceRegistration.RegisterServices(builder.Services);
 
 // 这里使用了内存数据库，你可以根据需要更改连接字符串
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"))
-);
+//builder.Services.AddDbContext<ApplicationContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"))
+//);
+
+//注册上下文：AOP里面可以获取IOC对象，如果有现成框架比如Furion可以不写这一行
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSingleton<ISqlSugarClient>(option =>
+{
+    SqlSugarScope sqlSugar = new SqlSugarScope(new ConnectionConfig()
+    {
+        DbType = DbType.SqlServer,
+        ConnectionString = builder.Configuration.GetConnectionString("SQLConnection"),
+        IsAutoCloseConnection = true,
+    },
+    db =>
+    {
+        db.DbMaintenance.CreateDatabase();
+
+        db.CodeFirst.SetStringDefaultLength(200).InitTables(typeof(Program).Assembly.GetTypes()
+        .Where(type => type.FullName.Contains("AutoMail.Models.Entities"))
+        .Where(type => !type.FullName.Contains("AutoMail.Models.Entities.BaseEntity"))
+        .ToArray());
+
+        db.Aop.OnLogExecuting = (sql, pars) =>
+        {
+
+        };
+    });
+    return sqlSugar;
+});
 
 builder.Services.AddAuthentication(options =>
 {

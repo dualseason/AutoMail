@@ -1,20 +1,11 @@
-﻿using AutoMail.Models.Entitys;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AutoMail.Models.Entities
+﻿namespace AutoMail.Models.Entities
 {
-    [Table("EmailSendRecord")]
     public class EmailSendRecord: BaseEntity
     {
-        [Required]
-        public required string Subject { get; set; }
-        [Required]
-        public required string Body { get; set; }
-        [Required]
-        public required string Sender { get; set; }
-        [Required]
-        public required string Recipient { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public string Sender { get; set; }
+        public string Recipient { get; set; }
         public DateTime SentAt { get; set; }
         // 其他邮件发送记录相关的属性，根据需要添加
 

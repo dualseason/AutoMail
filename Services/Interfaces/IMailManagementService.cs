@@ -1,4 +1,4 @@
-﻿using AutoMail.Models.Entitys;
+﻿using AutoMail.Models.Entities;
 
 namespace AutoMail.Services.Interfaces
 {

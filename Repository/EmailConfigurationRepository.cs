@@ -1,47 +1,35 @@
-﻿using AutoMail.Models.Entitys;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMail.Models.Entities;
+using SqlSugar;
 
 namespace AutoMail.Repository
 {
-    public class EmailConfigurationRepository : IEmailConfigurationRepository
+    public class EmailConfigurationRepository(ISqlSugarClient dbContext) : IEmailConfigurationRepository
     {
-        private readonly ApplicationContext _dbContext;
+        private readonly ISqlSugarClient _dbContext = dbContext;
 
-        public EmailConfigurationRepository(ApplicationContext dbContext)
+        public EmailConfiguration GetByEmailConfigurationId(int id)
         {
-            _dbContext = dbContext;
-        }
-
-        public EmailConfiguration? GetByEmailConfigurationId(int id)
-        {
-            return _dbContext.EmailConfigurations.FirstOrDefault(ec => ec.ID == id);
+            return _dbContext.Queryable<EmailConfiguration>().Where(x => x.ID == id).First();
         }
 
         public List<EmailConfiguration> GetAllEmailConfigurations()
         {
-            return [.. _dbContext.EmailConfigurations.Include(x => x.User)];
+            return _dbContext.Queryable<EmailConfiguration>().Includes(t => t.User).ToList();
         }
 
         public void AddEmailConfiguration(EmailConfiguration emailConfiguration)
         {
-            _dbContext.EmailConfigurations.Add(emailConfiguration);
-            _dbContext.SaveChanges();
+            _dbContext.Insertable(emailConfiguration).ExecuteCommand();
         }
 
         public void UpdateEmailConfiguration(EmailConfiguration emailConfiguration)
         {
-            _dbContext.Entry(emailConfiguration).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            _dbContext.Updateable(emailConfiguration).ExecuteCommand();
         }
 
         public void DeleteEmailConfiguration(int id)
         {
-            var emailConfiguration = _dbContext.EmailConfigurations.Find(id);
-            if (emailConfiguration != null)
-            {
-                _dbContext.EmailConfigurations.Remove(emailConfiguration);
-                _dbContext.SaveChanges();
-            }
+            _dbContext.Deleteable<EmailConfiguration>().Where(x => x.ID == id).ExecuteCommand();
         }
     }
 }

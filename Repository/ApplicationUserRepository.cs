@@ -1,46 +1,40 @@
 ﻿using AutoMail.Models.Entities;
+using SqlSugar;
 
 namespace AutoMail.Repository
 {
-    public class ApplicationUserRepository(ApplicationContext dbContext) : IApplicationUserRepository
+    public class ApplicationUserRepository(ISqlSugarClient dbContext) : IApplicationUserRepository
     {
-        private readonly ApplicationContext _dbContext = dbContext;
+        private readonly ISqlSugarClient _dbContext = dbContext;
 
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            return _dbContext.Users.ToList();
+            return _dbContext.Queryable<ApplicationUser>().ToList();
         }
 
         public ApplicationUser? GetUserById(int id)
         {
-            return _dbContext.Users.Find(id);
+            return _dbContext.Queryable<ApplicationUser>().Where(x => x.ID == id).First();
         }
 
         public void AddUser(ApplicationUser user)
         {
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            _dbContext.Insertable(user).ExecuteCommand();
         }
 
         public void UpdateUser(ApplicationUser user)
         {
-            _dbContext.Users.Update(user);
-            _dbContext.SaveChanges();
+            _dbContext.Updateable(user).ExecuteCommand();
         }
 
         public void DeleteUser(int id)
         {
-            var user = _dbContext.Users.Find(id);
-            if (user != null)
-            {
-                _dbContext.Users.Remove(user);
-                _dbContext.SaveChanges();
-            }
+            _dbContext.Deleteable<ApplicationUser>().Where(x => x.ID == id).ExecuteCommand();
         }
 
         public ApplicationUser GetUserByName(string name)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.Email == name);
+            return _dbContext.Queryable<ApplicationUser>().Where(x => x.UserName == name).First();
         }
     }
 }
