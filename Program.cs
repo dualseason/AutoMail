@@ -48,7 +48,10 @@ builder.Services.AddSingleton<ISqlSugarClient>(option =>
        
         db.Aop.OnLogExecuting = (sql, pars) =>
         {
-            Console.WriteLine(UtilMethods.GetNativeSql(sql, pars));
+            if (builder.Environment.IsDevelopment())
+            {
+                Console.WriteLine(UtilMethods.GetNativeSql(sql, pars));
+            }
         };
     });
     return sqlSugar;
